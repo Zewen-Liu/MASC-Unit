@@ -632,7 +632,7 @@ class exp_message(nn.Module):
             self.b2 = 0
     
     def forward(self, x1, x2):
-        return torch.exp(torch.log(torch.sigmoid(x1+self.b1)*2+0.00001)*(x2+self.b2))
+        return torch.sigmoid(x1+self.b1)*2+0.00001).pow(x2+self.b2)
 
 
     
