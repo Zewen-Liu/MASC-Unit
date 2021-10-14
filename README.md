@@ -9,6 +9,12 @@ Many medical and biological applications involve analysing vessel-like structure
 
 
 
+**Update key matrix M with momentum(e.g. a=0.99) can effectively improve model performance.**
+$$
+M_{t}= aM_{t-1} + (1-a)w \cdot w^T
+$$
+
+
 Paper available at: https://link.springer.com/chapter/10.1007%2F978-3-030-87231-1_57
 
 The preprint version available at: https://www.researchgate.net/publication/354768280_MASC-UnitsTraining_Oriented_Filters_for_Segmenting_Curvilinear_Structures
