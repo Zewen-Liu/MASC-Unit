@@ -10,10 +10,8 @@ Many medical and biological applications involve analysing vessel-like structure
 
 
 **Update key matrix M with momentum(e.g. a=0.99) can effectively improve model performance.**
-$$
-M_{t}= aM_{t-1} + (1-a)w \cdot w^T
-$$
 
+![image-20211015000159145](https://tva1.sinaimg.cn/large/008i3skNgy1gvfmf0fqbmj61g803k74702.jpg)
 
 Paper available at: https://link.springer.com/chapter/10.1007%2F978-3-030-87231-1_57
 
