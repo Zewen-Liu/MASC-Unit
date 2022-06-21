@@ -1,5 +1,5 @@
-# MASC: Spin Your Kernel!
- **Original title**: MASC - Multi Angle and Scale Convolution
+# MASC - Multi Angle and Scale Convolution
+Spin Your Kernel!
 
 The work was published on MICCAI 2021 main conference.
 
