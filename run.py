@@ -55,7 +55,6 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     print('model parameters: ', get_n_params(model))
     if model.MASC_Block1.MAC.messageIntegration in ['cosine', 'diffCosine']:
         print('GConv Block2 b2: '+str(model.MASC_Block1.MAC.b2[0].data))
-    # print(model.GConv4.conv_w[0][0])
     loss_func = nn.BCELoss()
     loss_func2 = nn.BCELoss()
     # loss_func2 = nn.MSELoss()
@@ -76,7 +75,6 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     loss_recorder, model = fit(model, epoch, loss_func, loss_func2, lambda_, opt, train_data ,test_data, folder, img, warm_up=warm_up, l2_norm=l2_norm, resume=resume)
     if model.MASC_Block1.MAC.messageIntegration in ['cosine', 'diffCosine']:
         print('MASC_Block1 b2: '+str(model.GC_Block1.GConv.b2[0].data))
-    # print(model.GConv4.conv_w[0][0])
     torch.save(model, folder + '/model')
     np.save(folder + '/log', loss_recorder)
     
@@ -92,12 +90,7 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
         cv2.imwrite(folder+'/index'+str(index)+'_ep'+str(epoch)+'.png', to_array(i[0,0]))
         index += 1
     imwrite(a[0][0,0]//1, folder + '/out.png') 
-    #
-#    model = torch.load('model')
-    ##loss_func = nn.BCELoss()
-    ##opt = torch.optim.Adam(model.parameters(), lr = 0.001)
-    ##train
-    ##loss_recorder, model = fit(model, 100, loss_func, opt, train_data ,test_data)
+
     test_list = os.listdir('data/testset/')
     os.system("mkdir "+folder+"/test")
     for i in test_list:
@@ -114,28 +107,36 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
         return model
     else:
         return 
-    
+
+# Set hyper-parameters
 num_fold = 5
 parallel_num = 2
 k_size = 9
 # theta in [0, 2pi)
 angle_num = 16
+
 for fold in range(num_fold):
     os.system('mkdir models/MASC_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold))
+    
+    # Load all data
     img = np.load('data/training_img.npy')
     label = np.load('data/training_label.npy')
     img2 = np.load('data/testing_img.npy')
     label2 = np.load('data/testing_label.npy')
     all_img = np.concatenate((img, img2))
     all_label = np.concatenate((label, label2))
+    
+    # Cross validation
     sample_num = len(all_img)
     mask = np.zeros(sample_num)
-    mask[fold*(sample_num//num_fold):(fold+1)*(sample_num//num_fold)]
+    bin_num = sample_num//num_fold
+    mask[fold*bin_num:(fold+1)*bin_num]
     img = all_img[mask]
     label = all_label[mask]
     img2 = all_img[~mask]
     label2 = all_label[~mask]
  
+    # Wrap data
     x_data, y_data = map(torch.tensor, (img, label))
     x_data = x_data.type('torch.FloatTensor')
     y_data = y_data.type('torch.FloatTensor')
@@ -146,12 +147,12 @@ for fold in range(num_fold):
     y_data = y_data.type('torch.FloatTensor')
     testset = TensorDataset(x_data, y_data)
     
+    # Train model
     Reg_mode = 3
     # temp = main('5MASC/temp', trainset, testset, epoch=3, parallel_num=2, angle_num=8, k_size=5, warm_up=True, identical_init=True, l2_norm=True, return_model=True)
     model = main('models/MASC_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold), trainset, testset, epoch=150, parallel_num=parallel_num, angle_num=angle_num, k_size=k_size, lambda_=0.01, warm_up=False, identical_init=True, l2_norm=True, return_model=True)
     
-
-
+# Visualise model
 GConv_visual(model)
 convW_visual(model)
 correlation_visual(model)
