@@ -126,6 +126,10 @@ for fold in range(num_fold):
     label = np.load('data/training_label.npy')
     img2 = np.load('data/testing_img.npy')
     label2 = np.load('data/testing_label.npy')
+    img = np.concatenate((img, img2))
+    label = np.concatenate((label, label2))
+    img2 = img[fold::num_fold]
+    label2 = label[fold::num_fold]
  
     x_data, y_data = map(torch.tensor, (img, label))
     x_data = x_data.type('torch.FloatTensor')
