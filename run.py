@@ -26,10 +26,6 @@ from model import *
 from model_chapter3 import *
 
 def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, k_size=9, lambda_=0.1, warm_up=False, identical_init=True, l2_norm=True, return_model=True, resume=False):
-    
-    '''
-    Test Images are Resized of folds of 12 !
-    '''
     lr_resume = 0
     if resume and lr_resume<0:
         raise ValueError('Please give lr resume value.')
