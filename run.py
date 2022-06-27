@@ -63,7 +63,7 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     else:
         opt = torch.optim.Adam(model.parameters(), lr = 0.001)
     
-    img = cv2.imread('../testset/Image_11L.jpg')
+    img = cv2.imread('data/testset/Image_11L.jpg')
     img = cv2.resize(img,None,fx=0.5,fy=0.5)
     img = torch.from_numpy(img)
     img = img.transpose(0, 2).transpose(1, 2)
@@ -97,11 +97,11 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     ##opt = torch.optim.Adam(model.parameters(), lr = 0.001)
     ##train
     ##loss_recorder, model = fit(model, 100, loss_func, opt, train_data ,test_data)
-    test_list = os.listdir('../testset/')
+    test_list = os.listdir('data/testset/')
     os.system("mkdir "+folder+"/test")
     for i in test_list:
         print(i)
-        img = cv2.imread('../testset/'+i)[:, :992]
+        img = cv2.imread('data/testset/'+i)[:, :992]
         img = cv2.resize(img,None,fx=0.5,fy=0.5)
         img = torch.from_numpy(img)
         img = img.transpose(0, 2).transpose(1, 2)
@@ -114,10 +114,6 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     else:
         return 
     
-
-img_path = '../training/img/'
-label_path = '../training/label/'
-files_img, files_label = map(get_filenames, (img_path, label_path))
 num_fold = 5
 parallel_num = 2
 k_size = 9
@@ -125,22 +121,10 @@ k_size = 9
 angle_num = 16
 for fold in range(num_fold):
     os.system('mkdir 5MASC/CHASEDB1/58_AveragedM/584_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold))
-    img = []
-    label = []
-    img2 = []
-    label2 = []
-    
-    key = 0
-    for i, j in zip(files_img[fold:8000:40], files_label[fold:8000:40]):
-    # for i, j in zip(files_img[fold:8000:8], files_label[fold:8000:8]):
-    # for i, j in zip(files_img[fold:8000:2], files_label[fold:8000:2]):
-        if key%num_fold == 0:
-            img2.append(cv2.imread(img_path+i)[:48, :48, :])
-            label2.append((cv2.imread(label_path+j, 0)[:48, :48]>125)*1)
-        else:
-            img.append(cv2.imread(img_path+i)[:48, :48, :])
-            label.append((cv2.imread(label_path+j, 0)[:48, :48]>125)*1)
-        key = key+1
+    img = np.load('data/training_img.npy')
+    label = np.load('data/training_label.npy')
+    img2 = np.load('data/testing_img.npy')
+    label2 = np.load('data/testing_label.npy')
  
     x_data, y_data = map(torch.tensor, (img, label))
     x_data = x_data.type('torch.FloatTensor')
