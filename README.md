@@ -22,3 +22,20 @@ The preprint version available at: https://www.researchgate.net/publication/3547
 <img src="https://tva1.sinaimg.cn/large/008i3skNgy1gvflc89a8hj60uw0a478n02.jpg" alt="KernelsWeights" style="zoom:67%;" />
 
 <img src="https://tva1.sinaimg.cn/large/008i3skNgy1gvflc747qdj60us0rh10j02.jpg" alt="scaleRotationIndexMaps" style="zoom:50%;" />
+
+
+##### Instructions
+
+The repository has 3 files.
+1. Data(folder): The dataset used for demonstration. It contains the patches cropped from CHASE-DB1[1] dataset.
+2. model.py: The classes and functions for constructing a MASC model.
+3. run.py: The file for loading the dataset and training a MASC-5-2-9 model.
+
+How to use them:
+1. Download **all** the files.
+2. Open run.py and compile it. It was set as a 5-fold cross-validation, so there would be 5 models to be trained. If you only want one model, make *num_fold=1*.
+3. Wait for the training to be completed. Models and all the middle outputs can be found in the '/models' folder.
+4. Visualise the kernels, using, GConv_visual(model),convW_visual(model),correlation_visual(model).
+
+
+[1] Owen, C.G., Rudnicka, A.R., Mullen, R., Barman, S.A., Monekosso, D., Whincup, P.H., Ng, J. and Paterson, C., 2009. Measuring retinal vessel tortuosity in 10-year-old children: validation of the computer-assisted image analysis of the retina (CAIAR) program. Investigative ophthalmology & visual science, 50(5), pp.2004-2010.

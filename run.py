@@ -120,7 +120,7 @@ k_size = 9
 # theta in [0, 2pi)
 angle_num = 16
 for fold in range(num_fold):
-    os.system('mkdir 5MASC/CHASEDB1/58_AveragedM/584_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold))
+    os.system('mkdir models/MASC_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold))
     img = np.load('data/training_img.npy')
     label = np.load('data/training_label.npy')
     img2 = np.load('data/testing_img.npy')
@@ -138,7 +138,7 @@ for fold in range(num_fold):
     
     Reg_mode = 3
     # temp = main('5MASC/temp', trainset, testset, epoch=3, parallel_num=2, angle_num=8, k_size=5, warm_up=True, identical_init=True, l2_norm=True, return_model=True)
-    temp = main('5MASC/CHASEDB1/58_AveragedM/584_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold), trainset, testset, epoch=150, parallel_num=parallel_num, angle_num=angle_num, k_size=k_size, lambda_=0.01, warm_up=False, identical_init=True, l2_norm=True, return_model=True)
+    temp = main('models/MASC_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold), trainset, testset, epoch=150, parallel_num=parallel_num, angle_num=angle_num, k_size=k_size, lambda_=0.01, warm_up=False, identical_init=True, l2_norm=True, return_model=True)
     
 
 
