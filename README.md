@@ -19,7 +19,7 @@ The work was published on MICCAI 2021 main conference.
 
 2. Open run.py and compile it. It was set as a 5-fold cross-validation, so there would be **5 models** to be trained. If you only want one model, make *num_fold=1*.
 
-3. Wait for the training to be completed. Models and all the middle outputs can be found in the '/models' folder.
+3. Wait for the training to be completed. Models, examples, and middle outputs can be found in the '/models' folder.
 
 One can visualise kernels with these functions: 
 GConv_visual(model): Visualise the hybrid kernels from the 'l3' MASC layer of the input model.
