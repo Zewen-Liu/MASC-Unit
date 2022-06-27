@@ -11,8 +11,9 @@ The work was published on MICCAI 2021 main conference.
 
 1. Data(folder): The dataset used for demonstration. It contains the patches cropped from CHASE-DB1[1] dataset.
 2. model.py: The classes and functions for constructing a MASC model.
-3. run.py: The file for loading the dataset and training a MASC-5-2-9 model.
-4. visualisation.py: Visualise MASC kernels.
+3. model_chapter3.py: An older version of 'model.py'. It is need when visualising the example models in the 'models/' folder for  solving the issues of renamed functions.
+4. run.py: The file for loading the dataset and training a MASC-5-2-9 model.
+5. visualisation.py: Visualise MASC kernels.
 
 ##### How to use them:
 
