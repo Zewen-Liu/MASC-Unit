@@ -22,8 +22,11 @@ The work was published on MICCAI 2021 main conference.
 3. Wait for the training to be completed. Models, examples, and middle outputs can be found in the '/models' folder.
 
 One can visualise kernels with these functions: 
+
 GConv_visual(model): Visualise the hybrid kernels from the 'l3' MASC layer of the input model.
+
 convW_visual(model): Visualise the convolutional parts of the kernels from the 'l3' MASC layer of the input model.
+
 correlation_visual(model): Visualise M matrix of the 'l3' MASC layer.
 
 
