@@ -33,6 +33,7 @@ class MAC_Unit(nn.Module):
         
         self.parallel_num = parallel_num
         self.angle_num = angle_num
+        self.Gab = nn.ModuleList([])
         self.conv_w = nn.ParameterList([])
 
         if mode in ['cosine', 'diffCosine']:
@@ -632,7 +633,7 @@ class exp_message(nn.Module):
             self.b2 = 0
     
     def forward(self, x1, x2):
-        return torch.sigmoid(x1+self.b1)*2+0.00001).pow(x2+self.b2)
+        return (torch.sigmoid(x1+self.b1)*2+0.00001).pow(x2+self.b2)
 
 
     

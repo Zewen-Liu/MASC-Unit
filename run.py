@@ -22,7 +22,8 @@ from scipy import signal
 import PIL.Image as PIL_Image
 
 
-from MASC58 import *
+from model import *
+from model_chapter3 import *
 
 def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, k_size=9, lambda_=0.1, warm_up=False, identical_init=True, l2_norm=True, return_model=True, resume=False):
     
@@ -45,15 +46,15 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     test_data = WrappedDataLoader(get_data(test_data, batch_size), preprocess)
     
     if not resume:
-        model = GConv(angle_num, parallel_num, k_size, identical=identical_init)
+        model = MASC_Model(angle_num, parallel_num, k_size, identical=identical_init)
         torch.save(model, folder + '/init_model')
     else:
         model = torch.load(folder+'/model')
         
     torch.save(model, folder + '/init_model')
     print('model parameters: ', get_n_params(model))
-    if model.GC_Block1.GConv.messageIntegration in ['cosine', 'diffCosine']:
-        print('GConv Block2 b2: '+str(model.GC_Block1.GConv.b2[0].data))
+    if model.MASC_Block1.MAC.messageIntegration in ['cosine', 'diffCosine']:
+        print('GConv Block2 b2: '+str(model.MASC_Block1.MAC.b2[0].data))
     # print(model.GConv4.conv_w[0][0])
     loss_func = nn.BCELoss()
     loss_func2 = nn.BCELoss()
@@ -73,8 +74,8 @@ def main(folder, train_data, test_data, epoch=150, parallel_num=3, angle_num=4, 
     
     #train
     loss_recorder, model = fit(model, epoch, loss_func, loss_func2, lambda_, opt, train_data ,test_data, folder, img, warm_up=warm_up, l2_norm=l2_norm, resume=resume)
-    if model.GC_Block1.GConv.messageIntegration in ['cosine', 'diffCosine']:
-        print('GConv Block2 b2: '+str(model.GC_Block1.GConv.b2[0].data))
+    if model.MASC_Block1.MAC.messageIntegration in ['cosine', 'diffCosine']:
+        print('MASC_Block1 b2: '+str(model.GC_Block1.GConv.b2[0].data))
     # print(model.GConv4.conv_w[0][0])
     torch.save(model, folder + '/model')
     np.save(folder + '/log', loss_recorder)
@@ -126,34 +127,22 @@ for fold in range(num_fold):
     img2 = np.load('data/testing_img.npy')
     label2 = np.load('data/testing_label.npy')
  
-    x_data, y_data = map(torch.tensor, (img, label))
+    x_data, y_data = map(torch.tensor, (img[::40], label[::40]))
     x_data = x_data.type('torch.FloatTensor')
     y_data = y_data.type('torch.FloatTensor')
     trainset = TensorDataset(x_data, y_data)
     
-    x_data, y_data = map(torch.tensor, (img2, label2))
+    x_data, y_data = map(torch.tensor, (img2[::40], label2[::40]))
     x_data = x_data.type('torch.FloatTensor')
     y_data = y_data.type('torch.FloatTensor')
     testset = TensorDataset(x_data, y_data)
     
     Reg_mode = 3
     # temp = main('5MASC/temp', trainset, testset, epoch=3, parallel_num=2, angle_num=8, k_size=5, warm_up=True, identical_init=True, l2_norm=True, return_model=True)
-    temp = main('models/MASC_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold), trainset, testset, epoch=150, parallel_num=parallel_num, angle_num=angle_num, k_size=k_size, lambda_=0.01, warm_up=False, identical_init=True, l2_norm=True, return_model=True)
+    model = main('models/MASC_p{}a{}k{}l2_fold{}'.format(parallel_num, angle_num, k_size, fold), trainset, testset, epoch=150, parallel_num=parallel_num, angle_num=angle_num, k_size=k_size, lambda_=0.01, warm_up=False, identical_init=True, l2_norm=True, return_model=True)
     
 
 
-
-
-# predict_test('5MASC/temp')
-
-
-# static M, no reg loss
-
-
-# GConv_visual(temp)
-
-
-# temp = torch.load('5MASC/CHASEDB1/58_AveragedM/581_p2a16k5l2_fold0/model')
-GConv_visual(temp)
-convW_visual(temp)
-correlation_visual(temp)
+GConv_visual(model)
+convW_visual(model)
+correlation_visual(model)
