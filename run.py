@@ -122,6 +122,9 @@ for fold in range(num_fold):
     all_img = np.concatenate((img, img2))
     all_label = np.concatenate((label, label2))
     
+    all_img = all_img[::40]
+    all_label = all_label[::40]
+    
     # Cross validation
     sample_num = len(all_img)
     mask = np.zeros(sample_num)
