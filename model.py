@@ -1029,7 +1029,7 @@ def visualise_com(model, in_folder, out_folder, video_tag=None):
         index += 1   
 
 def correlation_visual(model):
-    pattern = to_array(model.MASC_Block3.MAC.test_optimal_pattern()[:, :, :, 0, 0])
+    pattern = to_array(model.l3.MAC.test_optimal_pattern()[:, :, :, 0, 0])
     n, theta, _ = pattern.shape
     fig = plt.figure()
     gs = fig.add_gridspec(n+1, n)
@@ -1052,13 +1052,13 @@ def correlation_visual(model):
 # correlation_visual(temp) 
 
 def convW_visual(model):
-    kernels = model.MASC_Block3.MAC.conv_w
+    kernels = model.l3.MAC.conv_w
     n = len(kernels)
     d, _, _, k_size = kernels[0].shape
     fig, axs = plt.subplots(n, d+1)
     fig.set_size_inches(2.5*(d+1), 2.7*n, forward=True)
     for i in range(n):
-        axs[i, 0].imshow(to_array(model.MASC_Block3.MAC.Gab[i](k_size)[1, 0]))
+        axs[i, 0].imshow(to_array(model.l3.MAC.Gab[i](k_size)[1, 0]))
         axs[i, 0].title.set_text('Gabor(k={})'.format(i))
         for j in range(0, d):
             axs[i, j+1].imshow(to_array(kernels[i][j, 0]))
@@ -1067,14 +1067,14 @@ def convW_visual(model):
 # convW_visual(temp)
 
 def MAC_visual(model):
-    kernels = model.MASC_Block3.MAC.pack_kernel(pack_Gab=False)
+    kernels = model.l3.MAC.pack_kernel(pack_Gab=False)
     n = len(kernels)
     k_size = kernels[0].shape[-1]
     d = kernels[0].shape[0]
     fig, axs = plt.subplots(n, d+1)
     fig.set_size_inches(2.5*(d+1), 2.7*n, forward=True)
     for i in range(n):
-        axs[i, 0].imshow(to_array(model.MASC_Block3.MAC.Gab[i](k_size)[1, 0]))
+        axs[i, 0].imshow(to_array(model.l3.MAC.Gab[i](k_size)[1, 0]))
         axs[i, 0].title.set_text('Gabor(k={})'.format(i))
         for j in range(0, d):
             axs[i, j+1].imshow(to_array(kernels[i][j, 0]))
