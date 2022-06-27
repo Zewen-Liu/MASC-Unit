@@ -19,7 +19,7 @@ The work was published on MICCAI 2021 main conference.
 
 1. Download **all the files**.
 
-2. Open run.py and compile it. It was set as a 5-fold cross-validation, so there would be **5 models** to be trained. If you only want one model, make *num_fold=1*.
+2. Open run.py and compile it. It was set as a 5-fold cross-validation, so there would be **5 models** to be trained. If you only want one model, make *num_fold=1*. In the script, 1/20 samples are loaded for training. If you wants to use more, modify the line 125 and 126.
 
 3. Wait for the training to be completed. Models, examples, and middle outputs can be found in the '/models' folder.
 
