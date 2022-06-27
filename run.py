@@ -127,12 +127,12 @@ for fold in range(num_fold):
     img2 = np.load('data/testing_img.npy')
     label2 = np.load('data/testing_label.npy')
  
-    x_data, y_data = map(torch.tensor, (img[::40], label[::40]))
+    x_data, y_data = map(torch.tensor, (img, label))
     x_data = x_data.type('torch.FloatTensor')
     y_data = y_data.type('torch.FloatTensor')
     trainset = TensorDataset(x_data, y_data)
     
-    x_data, y_data = map(torch.tensor, (img2[::40], label2[::40]))
+    x_data, y_data = map(torch.tensor, (img2, label2))
     x_data = x_data.type('torch.FloatTensor')
     y_data = y_data.type('torch.FloatTensor')
     testset = TensorDataset(x_data, y_data)
